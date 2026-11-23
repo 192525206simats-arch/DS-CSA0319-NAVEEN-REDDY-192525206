@@ -1,1 +1,29 @@
+#include <stdio.h>
+int q[10],f=-1,r=-1;
 
+void add(int x) {
+    if(r==9) printf("Full\n");
+    else {
+        if(f==-1) f=0;
+        q[++r]=x;
+    }
+}
+void process() {
+    if(f==-1) printf("Empty\n");
+    else {
+        printf("Processed: %d\n",q[f++]);
+        if(f>r) f=r=-1;
+    }
+}
+void display() {
+    int i;
+    printf("Pending: ");
+    for(i=f;i!=-1 && i<=r;i++) printf("%d ",q[i]);
+}
+
+int main() {
+    add(1001); add(1002); add(1003);
+    process();
+    display();
+    return 0;
+}
