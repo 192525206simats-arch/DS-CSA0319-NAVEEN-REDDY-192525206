@@ -1,40 +1,28 @@
-
 #include <stdio.h>
 #include <time.h>
-#include <stdlib.h>
 
 int main() {
-    int a[10], key, i, count=0, found=0, ch;
-    clock_t s, e;
+    int a[10],key,i,c=0;
+    clock_t s,e;
 
-    printf("Enter 1 for manual, 2 for random: ");
-    scanf("%d", &ch);
-
-    for(i=0;i<10;i++) {
-        if(ch==1) scanf("%d",&a[i]);
-        else a[i]=rand()%100+1;
-    }
+    printf("Enter 10 elements: ");
+    for(i=0;i<10;i++) scanf("%d",&a[i]);
 
     printf("Enter target: ");
     scanf("%d",&key);
 
     s=clock();
     for(i=0;i<10;i++) {
-        count++;
-        if(a[i]==key) {
-            found=1;
-            break;
-        }
+        c++;
+        if(a[i]==key) break;
     }
     e=clock();
 
-    if(found) printf("Position: %d\n",i+1);
+    if(i<10) printf("Position: %d\n",i+1);
     else printf("Not Found\n");
 
-    printf("Comparisons: %d\n",count);
-    printf("Status: %s\n",found?"Found":"Not Found");
-    printf("Time: %.3f ms\n",
-    (double)(e-s)*1000/CLOCKS_PER_SEC);
-
+    printf("Comparisons: %d\n",c);
+    printf("Status: %s\n",i<10?"Found":"Not Found");
+    printf("Time: %.3f ms",(double)(e-s)*1000/CLOCKS_PER_SEC);
     return 0;
 }
