@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int key;
+    struct Node *l,*r;
+};
+
+struct Node* right(struct Node*x) {
+    struct Node*y=x->l;
+    x->l=y->r; y->r=x;
+    return y;
+}
+struct Node* left(struct Node*x) {
+    struct Node*y=x->r;
+    x->r=y->l; y->l=x;
+    return y;
+}
+struct Node* insert(struct Node*t,int k) {
+    if(!t) {
+        t=malloc(sizeof(*t));
+        t->key=k; t->l=t->r=NULL;
+        return t;
+    }
+    if(k<t->key) t->l=insert(t->l,k);
+    else if(k>t->key) t->r=insert(t->r,k);
+    return t;
+}
+struct Node* splay(struct Node*t,int k) {
+    if(!t || t->key==k) return t;
+    if(k<t->key) {
+        if(!t->l) return t;
+        if(k<t->l->key) {
+            t->l->l=splay(t->l->l,k);
+            t=right(t);
+        } else if(k>t->l->key) {
+            t->l->r=splay(t->l->r,k);
+            if(t->l->r) t->l=left(t->l);
+        }
+        return t->l?right(t):t;
+    } else {
+        if(!t->r) return t;
+        if(k>t->r->key) {
+            t->r->r=splay(t->r->r,k);
+            t=left(t);
+        } else if(k<t->r->key) {
+            t->r->l=splay(t->r->l,k);
+            if(t->r->l) t->r=right(t->r);
+        }
+        return t->r?left(t):t;
+    }
+}
+int main() {
+    struct Node*t=NULL;
+    int a[]={50,30,70,20,40,60,80,10,25,35,45,90};
+    int b[]={20,70,45,90,30},i;
+    for(i=0;i<12;i++) t=insert(t,a[i]);
+    for(i=0;i<5;i++) {
+        t=splay(t,b[i]);
+        printf("Search %d: Root=%d\n",b[i],t->key);
+    }
+    return 0;
+}
